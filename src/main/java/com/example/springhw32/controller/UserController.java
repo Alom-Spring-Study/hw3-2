@@ -13,6 +13,7 @@ public class UserController {
 
     private final UserService userService;
 
+    // 회원 가입
     @PostMapping("/users")
     public UserDto join(@ModelAttribute UserDto userDto) {
         return userService.join(userDto);
