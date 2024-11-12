@@ -8,6 +8,9 @@ import com.example.springhw32.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -30,4 +33,15 @@ public class CommentService {
     }
 
     //특정 개시물에 달린 모든 댓글 조회
+    public List<CommentDto> getCommentByPostId(Long postId) {
+        List<CommentDto> commentDtos = commentRepository.findAllByPostId(postId).stream()
+                .map(this::EntityToDto).collect(Collectors.toList());
+        return commentDtos;
+    }
+
+    private CommentDto EntityToDto(Comment comment) {
+        CommentDto commentDto = new CommentDto();
+        commentDto.setText(comment.getText());
+        return commentDto;
+    }
 }

@@ -16,25 +16,25 @@ public class PostController {
 
     //글작성
     @PostMapping("")
-    public PostDto save(PostDto postDto) {
-        return postService.save(postDto);
+    public PostDto save(@ModelAttribute PostDto postDto, Long userId) {
+        return postService.save(postDto, userId);
     }
 
     //최신순으로 글 조회
     @GetMapping("")
-    public List<PostDto> findAllByOrder() {
+    public List<PostDto> findAllByOrderByCreatedAtDesc() {
         return postService.findAllByOrderByCreatedAtDesc();
     }
 
     //작성자 글 조회
-    @GetMapping("/writer")
-    public List<PostDto> findByWriter(@PathVariable Long userId) {
+    @GetMapping("/{writer}")
+    public List<PostDto> findAllByWriter(@PathVariable("writer") Long userId) {
         return postService.findAllByWriter(userId);
     }
 
     //댓글 많은 순 조회
     @GetMapping("/comments")
-    public List<PostDto> findByCommentNumberDesc() {
-        return postService.findAllByCommentNumberDesc();
+    public List<PostDto> findAllByOrderByCommentNumberDesc() {
+        return postService.findAllByOrderByCommentNumberDesc();
     }
 }

@@ -12,10 +12,9 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long commentId;
+    private Long Id;
 
     @ManyToOne
-    @JoinColumn(name = "postId")
     private Post post;
 
     private String text;

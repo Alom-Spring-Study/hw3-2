@@ -20,11 +20,11 @@ public class PostService {
     private final UserRepository userRepository;
 
     //글 작성
-    public PostDto save(PostDto postDto) {
+    public PostDto save(PostDto postDto, Long userId) {
         Post post = new Post();
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
-        post.setUser(userRepository.findByUserId(postDto.getUserId()));
+        post.setUser(userRepository.findById(userId).orElse(null));
         post.setCommentNumber(0);
         post.setCreatedAt(LocalDateTime.now());
         postRepository.save(post);
@@ -33,22 +33,31 @@ public class PostService {
 
     //최신순으로 글 조회
     public List<PostDto> findAllByOrderByCreatedAtDesc() {
-        List<PostDto> postDtos = postRepository.findAllOrderByCreatedAtDesc().stream()
-                .map(post -> new PostDto()).collect(Collectors.toList());
+        List<PostDto> postDtos = postRepository.findAllByOrderByCreatedAtDesc().stream()
+                .map(this::EntityToDto).collect(Collectors.toList());
         return postDtos;
     }
 
     //특정 회원이 작성한 글 조회
     public List<PostDto> findAllByWriter(Long userId) {
-        List<PostDto> postDtos = postRepository.findByUserId(userId).stream()
-                .map(post -> new PostDto()).collect(Collectors.toList());
+        List<PostDto> postDtos = postRepository.findAllByUserId(userId).stream()
+                .map(this::EntityToDto).collect(Collectors.toList());
         return postDtos;
     }
 
     //댓글이 많은 순으로 정렬 조회
-    public List<PostDto> findAllByCommentNumberDesc() {
-        List<PostDto> postDtos = postRepository.findByCommentNumberDesc().stream()
-                .map(post -> new PostDto()).collect(Collectors.toList());
+    public List<PostDto> findAllByOrderByCommentNumberDesc() {
+        List<PostDto> postDtos = postRepository.findAllByOrderByCommentNumberDesc().stream()
+                .map(this::EntityToDto).collect(Collectors.toList());
         return postDtos;
+    }
+
+    private PostDto EntityToDto(Post post) {
+        PostDto postDto = new PostDto();
+        postDto.setTitle(post.getTitle());
+        postDto.setContent(post.getContent());
+        postDto.setCreatedAt(post.getCreatedAt());
+        postDto.setCommentNumber(post.getCommentNumber());
+        return postDto;
     }
 }

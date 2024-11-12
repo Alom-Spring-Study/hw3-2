@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
     //회원가입
-    @PostMapping("/signup")
+    @PostMapping("/users")
     public UserDto signup(@ModelAttribute UserDto userDto) {
         return userService.signup(userDto);
     }

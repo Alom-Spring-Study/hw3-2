@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class PostDto {
-    private Long userId;
     private String title;
     private String content;
     private LocalDateTime createdAt;

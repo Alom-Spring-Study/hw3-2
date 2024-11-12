@@ -13,11 +13,9 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long postId;
+    private Long Id;
 
-    @Column
     @ManyToOne
-    @JoinColumn(name = "userId")
     private User user;
 
     @Column(nullable = false)
